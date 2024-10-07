@@ -1,0 +1,30 @@
+buildscript {
+    ext.kotlin_version = '1.8.0' // 使用 Kotlin 1.8.0
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.0.2" // 使用與 Gradle 7.6.3 兼容的 Android Gradle 插件版本
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // 使用正確的 Kotlin 插件
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
